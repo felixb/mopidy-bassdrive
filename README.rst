@@ -30,6 +30,18 @@ Install the Mopidy-Bassdrive extension by running::
     pip install mopidy-bassdrive
 
 
+Configuration
+=============
+
+This is the default config of mopidy-bassdrive::
+
+    [bassdrive]
+    # enable plugin
+    enabled = true
+    # cache archive for 24h / 1140min
+    refresh_archive = 1440
+
+
 Usage
 =====
 
@@ -50,7 +62,12 @@ Project resources
 Changelog
 =========
 
-v0.1 (2014-07-28)
+v0.1 (UNRELEASED)
 -----------------
+
+- Cache archive structure
+
+v0.0.1 (2014-07-28)
+-------------------
 
 - Initial release

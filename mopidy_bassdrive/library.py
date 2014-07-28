@@ -19,11 +19,15 @@ class BassdriveLibraryProvider(backend.LibraryProvider):
 
     def __init__(self, *args, **kwargs):
         super(BassdriveLibraryProvider, self).__init__(*args, **kwargs)
+        self._cache = {}
 
     def browse(self, uri):
-        logger.info('browse: %s', str(uri))
+        logger.debug('browse: %s', str(uri))
         if not uri:
             return []
+
+        if uri in self._cache:
+            return self._cache[uri]
 
         # show root
         if uri == 'bassdrive:archive':
@@ -41,6 +45,7 @@ class BassdriveLibraryProvider(backend.LibraryProvider):
                     if url and name:
                         refs.append(Ref.album(uri='bassdrive:archive:%s' % url,
                                               name=name))
+                self._cache[uri] = refs
                 return refs
 
         parts = uri.split(':')
@@ -59,7 +64,6 @@ class BassdriveLibraryProvider(backend.LibraryProvider):
                 if url and name and str(url[0]) != '/':
                     name = str(name).strip()
                     url = base_url + url
-                    logger.info('URL: %r', url)
                     if url[-1] == '/':
                         refs.append(Ref.album(uri='bassdrive:archive:%s' % url,
                                               name=name))
@@ -67,6 +71,7 @@ class BassdriveLibraryProvider(backend.LibraryProvider):
                         refs.append(Ref.track(
                             uri=BassdriveLibraryProvider.root_url + url,
                             name=name))
+            self._cache[uri] = refs
             return refs
 
         logger.warning('Unknown uri: %r', uri)
@@ -77,8 +82,10 @@ class BassdriveLibraryProvider(backend.LibraryProvider):
         return []
 
     def refresh(self, uri=None):
-        # nothing to do
-        pass
+        # flush cache
+        self._cache = {}
+        # prefetch bassdrive root
+        self.browse('bassdrive:archive')
 
     def search(self, query=None, uris=None):
         # TODO

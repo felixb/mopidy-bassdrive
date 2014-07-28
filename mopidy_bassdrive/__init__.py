@@ -20,6 +20,7 @@ class BassdriveExtension(ext.Extension):
 
     def get_config_schema(self):
         schema = super(BassdriveExtension, self).get_config_schema()
+        schema['refresh_archive'] = config.Integer(minimum=0, optional=True)
         return schema
 
     def setup(self, registry):
