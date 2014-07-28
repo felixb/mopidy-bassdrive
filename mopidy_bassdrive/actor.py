@@ -19,4 +19,3 @@ class BassdriveBackend(pykka.ThreadingActor, backend.Backend):
 
     def on_start(self):
         self.library.refresh()
-        self.playlists.refresh()
