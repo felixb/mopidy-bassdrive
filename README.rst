@@ -62,7 +62,7 @@ Project resources
 Changelog
 =========
 
-v0.1 (UNRELEASED)
+v0.1 (2014-07-29)
 -----------------
 
 - Cache archive structure
