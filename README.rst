@@ -53,10 +53,10 @@ stream.
 Project resources
 =================
 
-- `Source code <https://github.com/felixb/mopidy-Bassdrive>`_
-- `Issue tracker <https://github.com/felixb/mopidy-Bassdrive/issues>`_
+- `Source code <https://github.com/felixb/mopidy-bassdrive>`_
+- `Issue tracker <https://github.com/felixb/mopidy-bassdrive/issues>`_
 - `Download development snapshot
-  <https://github.com/felixb/mopidy-Bassdrive/archive/develop.zip>`_
+  <https://github.com/felixb/mopidy-bassdrive/archive/develop.zip>`_
 
 
 Changelog
