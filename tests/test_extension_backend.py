@@ -2,6 +2,8 @@ import time
 
 import unittest
 
+from mopidy.models import Ref
+
 from mopidy_bassdrive import BassdriveExtension, actor as backend_lib
 
 
@@ -52,25 +54,56 @@ class BackendTest(unittest.TestCase):
     def test_cache_init(self):
         self.backend.on_start()
         time.sleep(3)
-        self.assertTrue(len(self.backend.library._cache) > 0)
+        self.assertTrue(len(self.backend.library._refs) > 0)
         self.backend.on_stop()
 
     def test_cache(self):
         uri = 'bassdrive:archive:/1%20-%20Monday/'
         # cache is empty, because on_start() was not run
-        self.assertTrue(len(self.backend.library._cache) == 0)
+        self.assertTrue(len(self.backend.library._refs) == 0)
         res0 = self.backend.library.browse(uri)
-        self.assertTrue(len(self.backend.library._cache) > 0)
-        self.assertIn(uri, self.backend.library._cache)
-        self.assertEqual(res0, self.backend.library._cache[uri])
+        self.assertTrue(len(self.backend.library._refs) > 0)
+        self.assertIn(uri, self.backend.library._refs)
+        self.assertEqual(res0, self.backend.library._refs[uri])
         res1 = self.backend.library.browse(uri)
         self.assertEqual(res0, res1)
 
-    def test_lookup(self):
+    def test_lookup_invalid(self):
         res = self.backend.library.lookup(None)
         self.assertEqual(res, [])
         res = self.backend.library.lookup('bassdrive:archive')
         self.assertEqual(res, [])
+        res = self.backend.library.lookup('bassdrive:archive:/fucked-up-link')
+        self.assertEqual(res, [])
+
+    def test_lookup_stream(self):
+        res = self.backend.library.lookup('bassdrive:stream')
+        self.assertEqual(len(res), 1)
+
+    def test_browse_and_lookup(self):
+        res = self.backend.library.browse('bassdrive:archive')
+        ref = res[1]
+        found = False
+        while ref and not found:
+            if ref.type == Ref.ALBUM:
+                res = self.backend.library.browse(ref.uri)
+                ref = res[0]
+            elif ref.type == Ref.TRACK:
+                tracks = self.backend.library.lookup(ref.uri)
+                self.assertEqual(len(tracks), 1)
+                track = tracks[0]
+                self.assertIsNotNone(track)
+                self.assertIsNotNone(track.name)
+                self.assertIsNotNone(track.album)
+                self.assertIsNotNone(track.album.artists)
+                self.assertIsNotNone(track.artists)
+                found = True
+            else:
+                self.fail('Unknown ref type: %r' % ref)
+        self.assertTrue(found)
+
+    def test_browse_and_lookup_cached(self):
+        self.test_browse_and_lookup()
 
     def test_search(self):
         res = self.backend.library.search()
