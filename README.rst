@@ -62,8 +62,8 @@ Project resources
 Changelog
 =========
 
-v0.2 (UNRELEASED)
------------------
+v0.1.1 (2014-07-31)
+-------------------
 
 - Provide track details to clients to prevent remote lookup on every track
 
