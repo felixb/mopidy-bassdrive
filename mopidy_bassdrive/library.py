@@ -122,10 +122,7 @@ class BassdriveLibraryProvider(backend.LibraryProvider):
         # prefetch bassdrive root
         self.browse('bassdrive:archive')
 
-    def search(self, query=None, uris=None):
-        logger.warning('unimplemented search: query=%r uris=%r', query, uris)
-        # TODO
-        return []
+    # TODO Implement search()
 
     def _link_to_track(self, uri):
         if uri in self._tracks:

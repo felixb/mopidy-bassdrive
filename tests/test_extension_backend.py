@@ -104,7 +104,3 @@ class BackendTest(unittest.TestCase):
 
     def test_browse_and_lookup_cached(self):
         self.test_browse_and_lookup()
-
-    def test_search(self):
-        res = self.backend.library.search()
-        self.assertEqual(res, [])
