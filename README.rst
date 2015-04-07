@@ -62,11 +62,10 @@ Project resources
 Changelog
 =========
 
-v0.2.0 (UNRELEASED)
+v0.2.0 (2015-04-07)
 -------------------
 
 - Require Mopidy >= 1.0
-
 - Update to work with changed backend APIs in Mopidy 1.0
 
 v0.1.1 (2014-07-31)
